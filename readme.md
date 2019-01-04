@@ -17,8 +17,8 @@ and Cows:
 - Bulls: 4
 - Cows: 1
 
-We got 4 bulls because we got the correct letters `plan` in the correct position.
-We got 1 cows because the letters `a` are in the word planet, but not in the
+We got 4 bulls because we got the correct letters `plan` in the correct position.  
+We got 1 cow because the letter `a` is in the word planet, but not in the 
 right position. Also, this would be a false positive.
 
 Have fun!
