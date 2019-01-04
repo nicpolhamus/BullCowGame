@@ -16,6 +16,7 @@ void PlayGame();
 FText GetValidGuess();
 void PrintGuess(FText &Guess);
 bool AskToPlayAgain();
+void PrintGameSummary();
 
 FBullCowGame BCGame;
 
@@ -39,21 +40,22 @@ void PlayGame() {
   /* number of guesses */
   int32 MaxTries = BCGame.GetMaxTries();
   /* loop through each guess */
-  for (int32 count = 0; count < MaxTries; count++) { // TODO: change from FOR to while once validation is in place
+  while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) { // TODO: change from FOR to while once validation is in place
     /* get the players guess and print the guess back */
     FText Guess = GetValidGuess();
     
     // submit valid guess to game
-    FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+    FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 
     std::cout << "Bulls: " << BullCowCount.Bulls << std::endl;
     std::cout << "Cows: " << BullCowCount.Cows << "\n\n";
   }
-  // TODO: add game summary
+  PrintGameSummary();
 }
 
 /* introduce the game */
 void PrintIntro() {
+  std::cout << std::endl;
   std::cout << "Welcome to Bulls and Cows, a fun word game?" << std::endl;
   std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
   std::cout << " letter isogram I'm thinking of?\n" << std::endl;
@@ -82,7 +84,7 @@ FText GetValidGuess() {
         std::cout << "Please enter guess in lowercase.\n";
         break;
       default:
-        return Guess;
+        break;
     }
   } while (Status != EGuessStatus::OK);
   return Guess;
@@ -94,9 +96,20 @@ void PrintGuess(FText &Guess) {
 }
 
 bool AskToPlayAgain() {
-  std::cout << "Do you want to play again? ";
+  std::cout << "Do you want to play again? (y/n)";
   FText Response = "";
   getline(std::cin, Response);
   std::cout << std::endl;
   return (Response[0] == 'y') || (Response[0] == 'Y');
+}
+
+void PrintGameSummary() {
+  FText GameSummary = "";
+  if (BCGame.IsGameWon()) {
+    GameSummary = "Congrats, you won!";
+  } else {
+    GameSummary = "Sorry, you lost. Try again!";
+  }
+  std::cout << GameSummary << std::endl;
+  return;
 }

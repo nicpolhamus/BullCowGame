@@ -30,22 +30,26 @@ enum class EGuessStatus {
 
 class FBullCowGame {
 public:
+  /* constructor */
   FBullCowGame();
-  void Reset(); // TODO: make this have a richer return value
+  /* getters */
   int32 GetMaxTries() const;
   int32 GetCurrentTry() const;
   int32 GetHiddenWordLength() const;
   bool IsGameWon() const;
-  EGuessStatus CheckGuessValidity(FString) const; // TODO: make this return a richer value
+  EGuessStatus CheckGuessValidity(FString) const;
+  bool IsPlaying() const;
+  
+  void Reset(); // TODO: make this have a richer return value
   void Start();
   void Stop();
-  bool IsPlaying() const;
-  FBullCowCount SubmitGuess(FString);
+  FBullCowCount SubmitValidGuess(FString);
     
 private:
   int32 MyCurrentTry;
   int32 MyMaxTries;
   FString HiddenWord;
+  bool bGameIsWon;
 };
 
 #endif /* FBullCowGame_hpp */
