@@ -109,10 +109,8 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess) {
 }
 
 void FBullCowGame::Reset() {
-  /* init the hidden word */
-  const FString HIDDEN_WORD = "planet";
-  /* set the hidden word*/
-  HiddenWord = HIDDEN_WORD;
+  /* init hidden word */
+  HiddenWord = "";
   /* init the current try */
   MyCurrentTry = 1;
   /* init Game status */
@@ -137,7 +135,7 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const {
 
 void FBullCowGame::SetHiddenWord(EGameDifficulties Difficulty) {
   /* this will be the index of our hidden word */
-  int32 RandomWord = rand() % 6; // TODO: remove magic number
+  int32 RandomWord = rand() % DictionaryLength;
   /* get the hidden word based on the chosen difficulty */
   switch (Difficulty) {
     case EGameDifficulties::Easy:

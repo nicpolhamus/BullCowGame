@@ -62,6 +62,7 @@ public:
 private:
   int32 MyCurrentTry;
   FString HiddenWord;
+  int32 DictionaryLength = 6;
   bool bGameIsWon;
   std::vector<FString> EasyHiddenWords = {
     "fun",
