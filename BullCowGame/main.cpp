@@ -4,7 +4,6 @@
  * user interaction. For game logic see the FBullCowGame class.
  */
 
-#pragma once
 #include <iostream>
 #include <string>
 #include "FBullCowGame.hpp"
@@ -18,6 +17,7 @@ FText GetValidGuess();
 void PrintGuess(FText &Guess);
 bool AskToPlayAgain();
 void PrintGameSummary();
+FText AskForDifficulty();
 
 /* Game object */
 FBullCowGame BCGame;
@@ -41,6 +41,10 @@ int main() {
 /* Plays a single round of Bulls and Cows */
 void PlayGame() {
   BCGame.Reset();
+  /* Ask player to set difficulty */
+  FText Difficulty = AskForDifficulty();
+  /* set the difficulty, which sets the hidden word for the game */
+  BCGame.SetDifficulty(Difficulty);
   /* number of guesses */
   int32 MaxTries = BCGame.GetMaxTries();
   /* loop through each guess */
@@ -61,8 +65,6 @@ void PlayGame() {
 void PrintIntro() {
   std::cout << std::endl;
   std::cout << "Welcome to Bulls and Cows, a fun word game?" << std::endl;
-  std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
-  std::cout << " letter isogram I'm thinking of?\n" << std::endl;
   return;
 }
 
@@ -118,4 +120,24 @@ void PrintGameSummary() {
   }
   std::cout << GameSummary << std::endl;
   return;
+}
+
+FText AskForDifficulty() {
+  std::cout << "Please choose a difficulty:\n";
+  std::cout << "e for easy\n";
+  std::cout << "s for simple\n";
+  std::cout << "m for medium\n";
+  std::cout << "h for hard\n";
+  std::cout << "vh for very hard\n";
+  std::cout << "Please enter your chosen difficulty: ";
+  FText ChosenDifficulty = "";
+  /* loop until we get a valid difficulty */
+  do {
+    getline(std::cin, ChosenDifficulty);
+    if (!BCGame.IsADifficulty(ChosenDifficulty)) {
+      std::cout << "Please enter a valid difficulty: ";
+    }
+  } while (!BCGame.IsADifficulty(ChosenDifficulty));
+  std::cout << std::endl;
+  return ChosenDifficulty;
 }

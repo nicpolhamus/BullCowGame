@@ -61,6 +61,25 @@ bool FBullCowGame::IsLowercase(FString Word) const {
   return true;
 }
 
+bool FBullCowGame::IsADifficulty(FString Difficulty) const {
+  if (Difficulty == "e") {
+    return true;
+  }
+  if (Difficulty == "s") {
+    return true;
+  }
+  if (Difficulty == "m") {
+    return true;
+  }
+  if (Difficulty == "h") {
+    return true;
+  }
+  if (Difficulty == "vh") {
+    return true;
+  }
+  return false;
+}
+
 // counts bulls and cows, and incrementing turn number assuming valid guess
 FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess) {
   // increment turn value
@@ -90,10 +109,6 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess) {
 }
 
 void FBullCowGame::Reset() {
-  /* use constexpr for the magic number MAX_TRIES */
-  constexpr int32 MAX_TRIES = 8;
-  /* set the max tries for the game */
-  MyMaxTries = MAX_TRIES;
   /* init the hidden word */
   const FString HIDDEN_WORD = "planet";
   /* set the hidden word*/
@@ -118,4 +133,48 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const {
     return EGuessStatus::Wrong_Length;
   }
   return EGuessStatus::OK;
+}
+
+void FBullCowGame::SetHiddenWord(EGameDifficulties Difficulty) {
+  /* this will be the index of our hidden word */
+  int32 RandomWord = rand() % 6; // TODO: remove magic number
+  /* get the hidden word based on the chosen difficulty */
+  switch (Difficulty) {
+    case EGameDifficulties::Easy:
+      HiddenWord = EasyHiddenWords[RandomWord];
+      break;
+    case EGameDifficulties::Simple:
+      HiddenWord = SimpleHiddenWords[RandomWord];
+      break;
+    case EGameDifficulties::Hard:
+      HiddenWord = HardHiddenWords[RandomWord];
+      break;
+    case EGameDifficulties::Very_Hard:
+      HiddenWord = VeryHardHiddenWords[RandomWord];
+      break;
+    case EGameDifficulties::Medium:
+    default:
+      HiddenWord = MediumHiddenWords[RandomWord];
+      break;
+  }
+  return;
+}
+
+void FBullCowGame::SetDifficulty(FString Difficulty) {
+  if (Difficulty == "e") {
+    SetHiddenWord(EGameDifficulties::Easy);
+  }
+  if (Difficulty == "s") {
+    SetHiddenWord(EGameDifficulties::Simple);
+  }
+  if (Difficulty == "m") {
+    SetHiddenWord(EGameDifficulties::Medium);
+  }
+  if (Difficulty == "h") {
+    SetHiddenWord(EGameDifficulties::Hard);
+  }
+  if (Difficulty == "vh") {
+    SetHiddenWord(EGameDifficulties::Very_Hard);
+  }
+  return;
 }
